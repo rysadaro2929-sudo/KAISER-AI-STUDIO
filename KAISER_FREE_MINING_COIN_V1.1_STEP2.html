@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090711">
+<title>KAISER FREE MINING COIN — V1.1 Test Prototype</title>
+<style>
+:root{--bg:#090711;--panel:#191426;--panel2:#100c19;--gold:#f3c85c;--gold2:#d9a83f;--purple:#8e5ac2;--muted:#aaa2b8;--green:#62d5a5}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at 50% 20%,#28153e 0,#100b1a 38%,var(--bg) 75%);color:#f8f5ff;font-family:Arial,Helvetica,sans-serif;min-height:100vh}
+.wrap{width:min(100%,720px);margin:auto;padding:24px 16px 48px}
+.hero{text-align:center;padding:8px 0 30px}
+.logo{width:180px;height:145px;margin:0 auto 12px;display:grid;place-items:center;position:relative}
+.logo:before{content:"";position:absolute;width:132px;height:112px;border:6px solid var(--gold);border-radius:30px;transform:rotate(28deg);box-shadow:0 0 24px #a45bff88,inset 0 0 20px #a45bff22}
+.logo span{font-size:39px;font-weight:900;color:var(--gold);text-shadow:0 0 16px #f3c85c88;z-index:1}
+h1{font-size:clamp(23px,5vw,34px);letter-spacing:1.5px;color:#ffe39b;margin:8px 0}
+.tagline{color:#b8adca;letter-spacing:4px;font-size:14px;margin:10px 0 22px}
+.version{display:inline-block;border:1px solid #9667bc;border-radius:30px;padding:9px 20px;color:#d8c3f0;font-size:14px}
+.card{background:linear-gradient(145deg,#1e1830,#15101f);border:1px solid #403052;border-radius:28px;padding:24px;margin:18px 0;box-shadow:0 12px 35px #0005}
+.eyebrow{color:#aaa2b8;font-size:15px;margin-bottom:14px}
+.balance{font-size:clamp(42px,10vw,68px);font-weight:800;color:var(--gold);line-height:1}
+.balance small{font-size:20px;color:#ffe5a3}
+.rate{display:flex;justify-content:space-between;gap:12px;color:#bcb4ca;margin:20px 0 26px}
+.rate strong{color:#ffe4a2}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.stat{background:#0d0914;border:1px solid #382a49;border-radius:22px;padding:20px}
+.stat span{display:block;color:#aaa2b8;margin-bottom:12px}
+.stat strong{font-size:25px}
+.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:22px;font-weight:700}
+.pill{border:1px solid #9569bc;border-radius:24px;padding:9px 18px;color:#d9c5f0;font-size:14px;white-space:nowrap}
+.timer{text-align:center;font-size:clamp(38px,9vw,58px);font-weight:800;letter-spacing:3px;margin:22px 0}
+.progress{height:16px;background:#30243c;border-radius:30px;overflow:hidden;margin:18px 0 12px}
+.progress>div{height:100%;width:0;background:linear-gradient(90deg,#9a62ce,#f1c65b);transition:width .4s}
+.progress-label{display:flex;justify-content:space-between;color:#aaa2b8;font-size:14px}
+.status{color:var(--green);line-height:1.45;margin:18px 0}
+button{border:0;border-radius:18px;padding:17px 20px;font-size:18px;font-weight:800;cursor:pointer;width:100%;background:linear-gradient(100deg,#f0c65d,#b98736);color:#21162a}
+button:disabled{opacity:.48;cursor:not-allowed}
+button.secondary{background:#281b39;color:#e6d6fa;border:1px solid #76509b}
+button.claim{background:linear-gradient(100deg,#6bd9aa,#269b75);color:#081c16}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.note{color:#a79db5;font-size:13px;line-height:1.5;margin-top:18px}
+.history-item{display:flex;justify-content:space-between;gap:10px;padding:13px 0;border-bottom:1px solid #34283f;color:#d8d0e2}
+.history-item:last-child{border-bottom:0}
+.empty{color:#91889f;text-align:center;padding:14px 0}
+.footer{text-align:center;color:#766d82;font-size:12px;padding:18px}
+@media(max-width:420px){.card{padding:20px;border-radius:24px}.stat{padding:16px}.stat strong{font-size:21px}.section-title{font-size:19px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header class="hero">
+    <div class="logo"><span>KFC</span></div>
+    <h1>KAISER FREE MINING COIN</h1>
+    <div class="tagline">MINE · EARN · GROW</div>
+    <div class="version">V1.1 · STEP 2 TEST PROTOTYPE</div>
+  </header>
+
+  <section class="card">
+    <div class="eyebrow">YOUR AVAILABLE BALANCE</div>
+    <div class="balance"><span id="balance">0.000</span> <small>KFC</small></div>
+    <div class="rate"><span>Mining rate</span><strong>1 KFC / hour</strong></div>
+    <div class="stats">
+      <div class="stat"><span>Total mined</span><strong><b id="total">0.000</b> KFC</strong></div>
+      <div class="stat"><span>Mining sessions</span><strong id="sessions">0</strong></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="section-title"><span>⛏️ 24-HOUR MINING</span><span class="pill" id="statePill">READY</span></div>
+    <div class="timer" id="timer">24:00:00</div>
+    <div class="progress"><div id="bar"></div></div>
+    <div class="progress-label"><span id="percent">0% completed</span><span>Target: 24 hours</span></div>
+    <div class="status" id="status">Start a mining session to begin earning test KFC.</div>
+    <button id="startBtn">START MINING</button>
+    <button id="claimBtn" class="claim" hidden>CLAIM 24 KFC</button>
+    <div class="note">Test prototype only: KFC shown here is an in-app test balance, not a real cryptocurrency or withdrawable money. Your progress is saved in this browser on this device.</div>
+  </section>
+
+  <section class="card">
+    <div class="section-title"><span>📜 MINING HISTORY</span><span class="pill">LOCAL</span></div>
+    <div id="history" class="empty">No completed mining sessions yet.</div>
+  </section>
+  <div class="footer">KAISER FREE MINING COIN · V1.1 TEST BUILD</div>
+</main>
+<script>
+(() => {
+  "use strict";
+  const KEY = "kaiser_free_mining_coin_v11";
+  const DURATION = 24 * 60 * 60 * 1000;
+  const RATE_PER_MS = 1 / (60 * 60 * 1000);
+  const $ = id => document.getElementById(id);
+  const fresh = () => ({balance:0,total:0,sessions:0,active:null,history:[]});
+  let data;
+  try { data = JSON.parse(localStorage.getItem(KEY)) || fresh(); }
+  catch (_) { data = fresh(); }
+  if (!data || typeof data !== "object") data = fresh();
+  data.balance = Number(data.balance) || 0;
+  data.total = Number(data.total) || 0;
+  data.sessions = Number(data.sessions) || 0;
+  data.history = Array.isArray(data.history) ? data.history : [];
+
+  function save(){ try { localStorage.setItem(KEY, JSON.stringify(data)); } catch(e) { $("status").textContent = "Could not save data in this browser. Check browser storage settings."; } }
+  function fmt(n){ return (Number(n)||0).toFixed(3); }
+  function remaining(){
+    if(!data.active) return DURATION;
+    return Math.max(0, DURATION - (Date.now() - data.active.startedAt));
+  }
+  function earned(){
+    if(!data.active) return 0;
+    return Math.min(24, Math.max(0, (Date.now()-data.active.startedAt)*RATE_PER_MS));
+  }
+  function render(){
+    $("balance").textContent=fmt(data.balance);
+    $("total").textContent=fmt(data.total);
+    $("sessions").textContent=String(data.sessions);
+    const active=!!data.active, left=remaining(), done=active && left===0;
+    $("timer").textContent = active ? [Math.floor(left/3600000),Math.floor(left/60000)%60,Math.floor(left/1000)%60].map(v=>String(v).padStart(2,"0")).join(":") : "24:00:00";
+    const pct=active ? Math.min(100,(DURATION-left)/DURATION*100) : 0;
+    $("bar").style.width=pct+"%";
+    $("percent").textContent=Math.floor(pct)+"% completed";
+    $("statePill").textContent=done?"COMPLETED":active?"MINING":"READY";
+    $("startBtn").hidden=active;
+    $("claimBtn").hidden=!done;
+    if(done) $("status").textContent="Mining completed. Claim your 24 KFC to add them to your available balance.";
+    else if(active) $("status").textContent="Mining session is running. Progress is saved on this device.";
+    else $("status").textContent="Start a mining session to begin earning test KFC.";
+    $("history").innerHTML = data.history.length ? data.history.slice().reverse().map(item =>
+      `<div class="history-item"><span>${escapeHtml(item.date)}</span><strong>+${fmt(item.amount)} KFC</strong></div>`
+    ).join("") : '<div class="empty">No completed mining sessions yet.</div>';
+  }
+  function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+  $("startBtn").addEventListener("click",()=>{
+    if(data.active) return;
+    data.active={startedAt:Date.now()};
+    data.sessions += 1;
+    save(); render();
+  });
+  $("claimBtn").addEventListener("click",()=>{
+    if(!data.active || remaining()>0) return;
+    const amount=24;
+    data.balance += amount;
+    data.total += amount;
+    data.history.push({date:new Date().toLocaleString(),amount});
+    data.active=null;
+    save(); render();
+  });
+  window.addEventListener("pagehide",save);
+  document.addEventListener("visibilitychange",()=>{if(!document.hidden){render();save();}});
+  render();
+  setInterval(()=>{render(); if(data.active) save();},1000);
+})();
+</script>
+</body>
+</html>
